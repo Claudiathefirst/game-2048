@@ -39,8 +39,84 @@ document.addEventListener('DOMContentLoaded', () => {
   //swipe right
   const moveRight = () => {
     for (let i = 0; i < cells; i++) {
-      if (i % 4 === 0) {
+      if (i % width === 0) {
+        let cellOne = squares[i].innerHTML;
+        let cellTwo = squares[i + 1].innerHTML;
+        let cellThree = squares[i + 2].innerHTML;
+        let cellFour = squares[i + 3].innerHTML;
+        let boxes = [cellOne, cellTwo, cellThree, cellFour];
+        let row = boxes.map((box) => {
+          return parseInt(box);
+        });
+        console.log('ROWS', row);
+
+        let filteredRow = row.filter((num) => num);
+        let missing = width - filteredRow.length;
+        //array constructor based on missing num array length filled with 0
+
+        let zeros = Array(missing).fill(0);
+        let newRow = zeros.concat(filteredRow); //spread operator cause
+
+        console.log('NEW ROW', newRow);
+        squares[i].innerHTML = newRow[0];
+        squares[i + 1].innerHTML = newRow[1];
+        squares[i + 2].innerHTML = newRow[2];
+        squares[i + 3].innerHTML = newRow[3];
       }
     }
   };
+
+  const moveLeft = () => {
+    for (let i = 0; i < cells; i++) {
+      if (i % width === 0) {
+        let cellOne = squares[i].innerHTML;
+        let cellTwo = squares[i + 1].innerHTML;
+        let cellThree = squares[i + 2].innerHTML;
+        let cellFour = squares[i + 3].innerHTML;
+        let boxes = [cellOne, cellTwo, cellThree, cellFour];
+        let row = boxes.map((box) => {
+          return parseInt(box);
+        });
+        console.log('ROWS', row);
+
+        let filteredRow = row.filter((num) => num);
+        let missing = width - filteredRow.length;
+        //array constructor based on missing num array length filled with 0
+
+        let zeros = Array(missing).fill(0);
+        let newRow = filteredRow.concat(zeros); //spread operator cause
+
+        console.log('NEW ROW', newRow);
+        squares[i].innerHTML = newRow[0];
+        squares[i + 1].innerHTML = newRow[1];
+        squares[i + 2].innerHTML = newRow[2];
+        squares[i + 3].innerHTML = newRow[3];
+      }
+    }
+  };
+  const combineRow = () => {
+    for (let i = 0; i < cells.length; i++) {
+      if (squares[i].innerHTML === squares[i + 1].innerHTML) {
+        let combinedTotal =
+          parseInt(squares[i].innerHTML) + parseInt(square[i + 1].innerHTML);
+        squares[i].innerHTML = combinedTotal;
+        squares[i + 1].innerHTML = 0;
+      }
+    }
+  };
+
+  const keyRight = () => {
+    moveRight();
+    combineRow();
+    moveRight();
+    generate();
+  };
+
+  //assign keys
+  const control = (event) => {
+    if (event.keyCode === 39) {
+      keyRight();
+    }
+  };
+  document.addEventListener('keyup', control);
 });
