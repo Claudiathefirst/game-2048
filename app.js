@@ -4,24 +4,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const scoreDisplay = document.getElementById('score');
   const resultDisplay = document.getElementById('result');
   const width = 4;
-  let cells = width * width;
   let squares = [];
+
   //generate number randomly
   const generate = () => {
     //random num based on the num items in squares arr
     //round down to nearest integer
     let randomNumber = Math.floor(Math.random() * squares.length);
-    if (
-      squares[randomNumber].innerHTML === 0 ||
-      squares[randomNumber].innerHTML === '0'
-    ) {
+    if (squares[randomNumber].innerHTML == 0) {
       squares[randomNumber].innerHTML = 2;
     } else generate();
   };
   //create game board
   const createBoard = () => {
     //iterate as long as i is < than num of boxes
-    for (let i = 0; i < cells; i++) {
+    for (let i = 0; i < width * width; i++) {
       square = document.createElement('div');
       //gets or sets the HTML contained within the element.
       square.innerHTML = 0;
@@ -30,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
       //push each newly created square w/innerHtml of 0 into squares arr
       squares.push(square);
     }
-    //generate two 2's
     generate();
     generate();
   };
@@ -38,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //swipe right
   const moveRight = () => {
-    for (let i = 0; i < cells; i++) {
+    for (let i = 0; i < 16; i++) {
       if (i % width === 0) {
         let cellOne = squares[i].innerHTML;
         let cellTwo = squares[i + 1].innerHTML;
@@ -67,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const moveLeft = () => {
-    for (let i = 0; i < cells; i++) {
+    for (let i = 0; i < 16; i++) {
       if (i % width === 0) {
         let cellOne = squares[i].innerHTML;
         let cellTwo = squares[i + 1].innerHTML;
@@ -94,11 +90,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   };
+
   const combineRow = () => {
-    for (let i = 0; i < cells.length; i++) {
+    for (let i = 0; i < 15; i++) {
       if (squares[i].innerHTML === squares[i + 1].innerHTML) {
         let combinedTotal =
-          parseInt(squares[i].innerHTML) + parseInt(square[i + 1].innerHTML);
+          parseInt(squares[i].innerHTML) + parseInt(squares[i + 1].innerHTML);
         squares[i].innerHTML = combinedTotal;
         squares[i + 1].innerHTML = 0;
       }
@@ -112,10 +109,19 @@ document.addEventListener('DOMContentLoaded', () => {
     generate();
   };
 
+  const keyLeft = () => {
+    moveLeft();
+    combineRow();
+    moveLeft();
+    generate();
+  };
+
   //assign keys
   const control = (event) => {
     if (event.keyCode === 39) {
       keyRight();
+    } else if (event.keyCode === 37) {
+      keyLeft();
     }
   };
   document.addEventListener('keyup', control);
